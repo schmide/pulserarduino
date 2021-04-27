@@ -22,33 +22,20 @@ arduino Serial otherwise
 //#define TEXT_OUTPUT_ON
 
 #ifdef TEXT_OUTPUT_ON
-//#define TEXT_STANDARD
-#ifdef TEXT_STANDARD
-using namespace std;
-#define TEXTOUTPUT_FUNCTION cout
-#define TEXTOUTPUT(a, b, c, d) (a) << (b) << (c) << (d)  << "\n"
-#else // arduino 
 #define TEXTOUTPUT_FUNCTION Serial
 #define TEXTOUTPUT(a, b, c, d) (a).print(b); (a).print(c); (a).println(d)
-#endif
 #else 
 #define TEXTOUTPUT(a, b, c, d)
-#endif
-
-//#define INTEL_A_DUMB
-#ifdef INTEL_A_DUMB
-// suppress conversion warnings
-#pragma warning( disable : 4244 )
 #endif
 
 struct pulser_callback {
   void (*function)(float);
 };
 
-float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, char **pulseText = 0, pulser_callback *callbacks = 0);
-void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, char **pulseText = 0, pulser_callback *callbacks = 0, unsigned int step = 2, bool linear = true);
+float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[] = 0, pulser_callback *callbacks = 0);
+void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[] = 0, pulser_callback *callbacks = 0, unsigned int step = 2, bool linear = true);
 
-float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, char **pulseText, pulser_callback *callbacks)
+float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[], pulser_callback *callbacks)
 {
 	unsigned int index = 0;
 	do {
@@ -75,11 +62,11 @@ float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, fl
 	return analog;
 }
 
-void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, char **pulseText, pulser_callback *callbacks, unsigned int step, bool linear)
+void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[], pulser_callback *callbacks, unsigned int step, bool linear)
 {
 	if (linear) {
-		int index = 0;
-		int last = pulses[maxPulse - 1] + pulses[0];
+		unsigned int index = 0;
+    unsigned int last = pulses[maxPulse - 1] + pulses[0];
 		do {
 			Pulser(index, maxPulse, pulses, speed, pulseText, callbacks);
 			index += step;
