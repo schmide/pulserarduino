@@ -16,7 +16,7 @@ void CallDummy(float analog)
   Serial.println(analog);
 }
 
-float speed[] = {
+float speeds[] = {
   -1.0,
   0,
   1.0
@@ -47,12 +47,12 @@ struct pulser_callback pulseCallbacks[] = {
   { 0 }
 };
 
-unsigned int callNumber = 0;
-
 void setup()
 {
   Serial.begin(9600);  
-  TestPulser(maxPulse, pulses, speed, pulseText, pulseCallbacks); 
+  Serial.println();
+  Serial.println();
+  TestPulser(maxPulse, pulses, speeds, pulseText, pulseCallbacks); 
 }
 
 void loop() {

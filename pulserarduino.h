@@ -32,10 +32,10 @@ struct pulser_callback {
   void (*function)(float);
 };
 
-float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[] = 0, pulser_callback *callbacks = 0);
-void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[] = 0, pulser_callback *callbacks = 0, unsigned int step = 2, bool linear = true);
+float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speeds, const char *pulseText[] = 0, pulser_callback *callbacks = 0);
+void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speeds, const char *pulseText[] = 0, pulser_callback *callbacks = 0, unsigned int step = 2, bool linear = true);
 
-float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[], pulser_callback *callbacks)
+float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, float *speeds, const char *pulseText[], pulser_callback *callbacks)
 {
 	unsigned int index = 0;
 	do {
@@ -46,12 +46,12 @@ float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, fl
 	unsigned int halfIndex = index >> 1;
 	if (index & 1) { // odd
 		if (index < maxPulse >> 1) { // rising
-			analog = speed[halfIndex + 1] + (speed[halfIndex] - speed[halfIndex + 1]) * (pulses[index] - pulse) / (pulses[index] - pulses[index - 1]);
+			analog = speeds[halfIndex + 1] + (speeds[halfIndex] - speeds[halfIndex + 1]) * (pulses[index] - pulse) / (pulses[index] - pulses[index - 1]);
 		} else {
-			analog = speed[halfIndex] + (speed[halfIndex + 1] - speed[halfIndex]) * (pulse - pulses[index - 1]) / (pulses[index] - pulses[index - 1]);
+			analog = speeds[halfIndex] + (speeds[halfIndex + 1] - speeds[halfIndex]) * (pulse - pulses[index - 1]) / (pulses[index] - pulses[index - 1]);
 		}
 	} else {
-		analog = speed[halfIndex];
+		analog = speeds[halfIndex];
 	}
 	TEXTOUTPUT(TEXTOUTPUT_FUNCTION, pulse, pulseText ? pulseText[index] : " = ", analog);
 	if (callbacks) {
@@ -62,16 +62,16 @@ float Pulser(unsigned int pulse, unsigned int maxPulse, unsigned int *pulses, fl
 	return analog;
 }
 
-void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speed, const char *pulseText[], pulser_callback *callbacks, unsigned int step, bool linear)
+void TestPulser(unsigned int maxPulse, unsigned int *pulses, float *speeds, const char *pulseText[], pulser_callback *callbacks, unsigned int step, bool linear)
 {
 	if (linear) {
 		unsigned int index = 0;
     unsigned int last = pulses[maxPulse - 1] + pulses[0];
 		do {
-			Pulser(index, maxPulse, pulses, speed, pulseText, callbacks);
+			Pulser(index, maxPulse, pulses, speeds, pulseText, callbacks);
 			index += step;
 		} while (index < last);
 	} else {
-		Pulser(0, maxPulse, pulses, speed, pulseText, callbacks);
+		Pulser(0, maxPulse, pulses, speeds, pulseText, callbacks);
 	}
 }
