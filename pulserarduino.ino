@@ -3,9 +3,9 @@
 
 /*
 
-Example for testing Pulser function
+  Example for testing Pulser function
 
-linear function with floor, ceiling, and center dead zone
+  linear function with floor, ceiling, and center dead zone
 
 */
 
@@ -30,11 +30,11 @@ unsigned int pulses[] = {
 };
 
 const char *pulseText[] = {
-" reverse full, analog = ",
-" reverse, analog = ",
-" neutral, analog = ",
-" forward, analog = ",
-" forward full, analog = "
+  " reverse full, analog = ",
+  " reverse, analog = ",
+  " neutral, analog = ",
+  " forward, analog = ",
+  " forward full, analog = "
 };
 
 unsigned int maxPulse = sizeof(pulses) / sizeof(*pulses);
@@ -49,12 +49,12 @@ struct pulser_callback pulseCallbacks[] = {
 
 void setup()
 {
-  Serial.begin(9600);  
+  Serial.begin(9600);
   Serial.println();
   Serial.println();
-  TestPulser(maxPulse, pulses, speeds, pulseText, pulseCallbacks); 
+  TestPulser(maxPulse, pulses, speeds, pulseText, pulseCallbacks);
 }
 
 void loop() {
-  
+
 }
